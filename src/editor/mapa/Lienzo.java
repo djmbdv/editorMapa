@@ -35,7 +35,7 @@ public class Lienzo extends JPanel implements MouseListener,MouseMotionListener{
         matriz =  new int[24][32];
         img = null;
         try {
-            img = ImageIO.read(new File("C:\\Users\\alixo\\Documents\\NetBeansProjects\\Editor Mapa\\src\\muro.png"));
+            img = ImageIO.read(getClass().getResource("/muro.png"));
         } catch (IOException e) {
             System.err.println(e);
         }
