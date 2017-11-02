@@ -5,27 +5,47 @@
  */
 package editor.mapa;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
+import java.util.Scanner;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author djmbdv
  */
-public class Ventana extends javax.swing.JFrame {
+public class Ventana extends javax.swing.JFrame implements ActionListener {
     private File file;  
     /**
      * Creates new form Ventana
      */
+    JButton botones[];
     public Ventana() {
-        initComponents();
-         file  =  null;
+        botones =  new JButton[16];
+        
+               initComponents();
+                this.panelPaleta.setLayout(new GridLayout(8,2) );
+        for(int i = 0; i <16; i++){
+            botones[i] =  new JButton();
+            botones[i].setSize(70,70);
+            botones[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/" + (i+1)+ ".png"))); 
+            this.panelPaleta.add(botones[i]);
+             botones[i].addActionListener(this);
+        }
+
+        file  =  null;
+       
+         
     }
 
     /**
@@ -38,10 +58,9 @@ public class Ventana extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        panelPaleta = new javax.swing.JPanel();
         lienzo = new javax.swing.JPanel();
         lienzo = new Lienzo();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -57,13 +76,7 @@ public class Ventana extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Editor de Mapa");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/muro.png"))); // NOI18N
-        jButton1.setText("Muro");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jPanel1.setMaximumSize(new java.awt.Dimension(327, 32767));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/borra.png"))); // NOI18N
         jButton2.setText("Borrador");
@@ -73,44 +86,52 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Otro");
-
         jLabel1.setText("Herramientas");
+
+        panelPaleta.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        panelPaleta.setMaximumSize(new java.awt.Dimension(200, 500));
+
+        javax.swing.GroupLayout panelPaletaLayout = new javax.swing.GroupLayout(panelPaleta);
+        panelPaleta.setLayout(panelPaletaLayout);
+        panelPaletaLayout.setHorizontalGroup(
+            panelPaletaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 200, Short.MAX_VALUE)
+        );
+        panelPaletaLayout.setVerticalGroup(
+            panelPaletaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 352, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelPaleta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(11, 11, 11)
-                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addGap(0, 155, Short.MAX_VALUE))
+                .addComponent(panelPaleta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
         lienzo.setLayout(lienzoLayout);
         lienzoLayout.setHorizontalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 464, Short.MAX_VALUE)
+            .addGap(0, 502, Short.MAX_VALUE)
         );
         lienzoLayout.setVerticalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 515, Short.MAX_VALUE)
         );
 
         jMenu1.setText("Archivo");
@@ -174,18 +195,16 @@ public class Ventana extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(lienzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 78, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        ((Lienzo)lienzo).setPincel(1);
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -250,15 +269,20 @@ public class Ventana extends javax.swing.JFrame {
         int returnVal = fc.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            file = fc.getSelectedFile();
-            Charset charset = Charset.forName("US-ASCII");
-            try (BufferedWriter writer = Files.newBufferedWriter(file.toPath(), charset, StandardOpenOption.CREATE,StandardOpenOption.WRITE)) {
+            try {
+                file = fc.getSelectedFile();
+                Charset charset = Charset.forName("US-ASCII");
+                Scanner sc = new Scanner(file) ;
                 String s;
-                writer.write((s = ((Lienzo)lienzo).matrizString()), 0, s.length());
+               for(int j = 0; j < ((Lienzo)lienzo).alto; j++){
+            for(int i = 0; i < ((Lienzo)lienzo).ancho; i++){
+                ((Lienzo)lienzo).getMatriz()[j][i] = sc.nextInt();
+            }}
                 setTitle(getTitle() + " - " + file.getName());
-            } catch (IOException x) {
-                System.err.format("IOException: %s%n", x);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "No se encuentra el archivo!", "Error", JOptionPane.ERROR_MESSAGE);
             }
+           
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -298,9 +322,7 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -313,5 +335,15 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel lienzo;
+    private javax.swing.JPanel panelPaleta;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for(int i  = 0; i < 16; i++){
+            if(e.getSource() == botones[i]){
+               ((Lienzo)lienzo).setPincel(i+1);  
+            }
+        }
+    }
 }

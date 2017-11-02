@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.swing.JPanel;
 import javax.imageio.ImageIO;
@@ -18,7 +17,8 @@ import javax.imageio.ImageIO;
  */
 public class Lienzo extends JPanel implements MouseListener,MouseMotionListener{
     private int matriz [][];
-    BufferedImage img;
+    
+    BufferedImage img[];
     int pincel;
     int ancho;
     int alto;
@@ -33,9 +33,13 @@ public class Lienzo extends JPanel implements MouseListener,MouseMotionListener{
         alto = 16;
         pincel  = 1;
         matriz =  new int[24][32];
-        img = null;
+        img = new  BufferedImage[16];
         try {
-            img = ImageIO.read(getClass().getResource("/muro.png"));
+            for(int i = 0; i <16; i++){
+         
+            img[i]  = ImageIO.read(getClass().getResource("/img/" + (i+1)+ ".png")); 
+         
+        }
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -44,7 +48,7 @@ public class Lienzo extends JPanel implements MouseListener,MouseMotionListener{
         
     }
     
-    private void setCasilla(Point p, int n){
+    public void setCasilla(Point p, int n){
         try{
             matriz[p.y/32][p.x/32] = n;
         }catch(Exception e){
@@ -69,13 +73,10 @@ public class Lienzo extends JPanel implements MouseListener,MouseMotionListener{
         
         for(int j = 0; j < alto; j++){
             for(int i = 0; i < ancho; i++){
-                switch(matriz[j][i]){
-                    case 0:
+                if(matriz[j][i] == 0){
                     g.fillRect(i*32, j*32, 32, 32);
-                    break;
-                    case 1:
-                    g.drawImage(img, i*32, j*32, 32, 32, this);
-                }
+                    
+                }else g.drawImage(img[matriz[j][i] -1] , i*32, j*32, 32, 32, this);
             }
         }
     }
